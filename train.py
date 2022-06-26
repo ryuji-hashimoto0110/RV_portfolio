@@ -74,7 +74,7 @@ def train_rv_pf(model, device, initial_pv,
             rv_y, w = model(rv_x)
             loss_rv += criterion(rv_y, rv_t)
             if i == 0:
-                w_ = torch.zeros(prices.shape[2]+1)
+                w_ = torch.zeros(prices.shape[2]+1).to(device)
                 w_[0] = 1
             cpv = calculate_pv_after_commission(w, w_, commission_rate)
             pv_ = cpv * pv * torch.sum(w * rate_change)
@@ -114,21 +114,19 @@ def train_rv_pf(model, device, initial_pv,
 
         model.eval()
         valid_rv_loss = 0.0
-        valid_r = 0.0
         valid_R = 0.0
-        valid_r2 = 0.0
         valid_R2 = 0.0
         pv = torch.tensor(float(initial_pv)).to(device)
         with torch.no_grad():
             for j, batch in enumerate(valid_dataloader):
-                prices = batch[0].to(device)
+                prices = batch[0]
                 rate_change = prices[0,1,:] / prices[0,0,:]
-                rate_change = torch.cat([torch.ones(1), rate_change])
+                rate_change = torch.cat([torch.ones(1), rate_change]).to(device)
                 rv_x   = batch[1].to(device)
                 rv_t   = batch[2].to(device)
                 rv_y, w = model(rv_x)
-                if i == 0:
-                    w_ = torch.zeros(prices.shape[2]+1)
+                if j == 0:
+                    w_ = torch.zeros(prices.shape[2]+1).to(device)
                     w_[0] = 1
                 valid_rv_loss += float(criterion(rv_y, rv_t)) / valid_n
                 cpv = calculate_pv_after_commission(w, w_, commission_rate)

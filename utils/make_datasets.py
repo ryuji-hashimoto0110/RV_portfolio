@@ -47,7 +47,7 @@ class LSTM_RV_PF_Dataset(Dataset):
         self.prices_open_df = prices_open_df
         self.rv_df          = rv_df
         self.input_length   = input_length
-        self.dates = dates[input_length+1:-2]   
+        self.dates = dates[:-2]   
 
     def __len__(self):
         return len(self.dates)
@@ -66,11 +66,17 @@ def make_pf_dataset(prices_open_df, rv_df,
                     train_years, valid_years, input_length):
     train_dates = []
     valid_dates = []
+    count_train = 0
+    count_valid = 0
     for date in prices_open_df.index:
         if date.year in train_years:
-            train_dates.append(date)
+            count_train += 1
+            if count_train >= input_length+1:
+                train_dates.append(date)
         elif date.year in valid_years:
-            valid_dates.append(date)
+            count_valid += 1
+            if count_valid >= input_length+1:
+                valid_dates.append(date)
     train_dataset = LSTM_RV_PF_Dataset(prices_open_df, rv_df, 
                                        train_dates, input_length)
     valid_dataset = LSTM_RV_PF_Dataset(prices_open_df, rv_df, 
