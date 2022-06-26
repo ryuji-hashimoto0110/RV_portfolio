@@ -8,7 +8,7 @@ def calculate_pv_after_commission(w1, w0, commission_rate):
     return 1 - mu
 
 def train_rv_pf(model, device, initial_pv,
-                lam1, lam2, lam3,
+                lam1, lam2, lam3, loss_interval,
                 train_dataset, valid_dataset,
                 best_save_path, last_save_path, 
                 num_episode, commission_rate,
@@ -79,11 +79,11 @@ def train_rv_pf(model, device, initial_pv,
             cpv = calculate_pv_after_commission(w, w_, commission_rate)
             pv_ = cpv * pv * torch.sum(w * rate_change)
             r = torch.log(pv_) - torch.log(pv)
-            train_r += r / 100
-            train_r2 += r**2 / 100
+            train_r += r / loss_interval
+            train_r2 += r**2 / loss_interval
             prices = prices.detach()
             rate_change = rate_change.detach()
-            if i % 100 == 99:
+            if i % loss_interval == (loss_interval-1):
                 train_var_r = train_r2 - train_r**2
                 loss_sr = - (train_r / torch.sqrt(train_var_r))
                 loss = lam1*loss_rv + lam2*loss_sr
