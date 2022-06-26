@@ -32,7 +32,7 @@ def generate_intraday_data(mu, sigma,
                            day_num,       # Number of days to record (Ex:365)
                            record_times,  # Number of times to record per day (Ex:78)
                            delta_minutes, # How many minutes to record every (Ex:5)
-                           stock_num,     # int
+                           stock_num,
                            initial_prices,
                            stock_names=None, # len(stock_names) == stock_num
                            start_year=2015, start_month=1, start_day=1,
