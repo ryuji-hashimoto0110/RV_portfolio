@@ -25,7 +25,7 @@ def generate_mu_sigma(mu_upper, mu_lower, sigma_upper, sigma_lower, stock_num,
     return mu, sigma
 
 #---
-# Generate intraday price data process it into pandas DataFrame.
+# Generate intraday price data and process it into pandas DataFrame.
 #---
 
 def generate_intraday_data(mu, sigma, 
