@@ -2,7 +2,8 @@
 
 Multi-Task portfolio optimization based on volatility forecasting.
 
-- RV_portfolio
+```
+RV_portfolio
   |-notebooks
   |  |-RV_PF_simulation.ipynb
   |-utils
@@ -13,6 +14,7 @@ Multi-Task portfolio optimization based on volatility forecasting.
   |-models.py
   |-requirements.txt
   |-train.py
+```
 
 ## RV_PF_simulation.ipynb
 
