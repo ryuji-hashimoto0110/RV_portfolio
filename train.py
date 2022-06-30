@@ -154,9 +154,6 @@ def train_rv_pf(model, device, initial_pv,
             print(f'model saving to >> {str(save_path)}')
         else:
             save_path = last_save_path
-            print(f'episode{episode+1}/{num_episode}' +
-                  f' [Sharp Ratio]tra:{train_SR:.4f} val:{valid_SR:.4f}' +
-                  f' [RV loss]tra:{train_rv_loss:.8f} val:{valid_rv_loss:.8f}')
             print(f'model saving to >> {str(save_path)}')
 
         torch.save(
